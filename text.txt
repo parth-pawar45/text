@@ -1,0 +1,105 @@
+using System.ComponentModel.DataAnnotations;
+namespace StudentRegistration.Models
+{
+public class Student
+{
+[Required]
+public string Name { get; set; }
+[Required]
+public string Email { get; set; }
+
+[Required]
+public string Password { get; set; }
+[Required]
+public string Gender { get; set; }
+[Required]
+public string Course { get; set; }
+public bool Agree { get; set; }
+}
+}
+---------StudentController--------
+using System.Web.Mvc;
+using StudentRegistration.Models;
+namespace StudentRegistration.Controllers
+{
+public class StudentController : Controller
+{
+
+public ActionResult Register()
+{
+return View();
+}
+[HttpPost]
+public ActionResult Register(Student student)
+{
+if (ModelState.IsValid)
+{
+ViewBag.Message = "Student registered successfully!";
+}
+return View(student);
+}
+}
+}
+
+--------Register.cshtm----------
+@model StudentRegistration.Models.Student
+@{
+ViewBag.Title = "Student Registration";
+}
+<h2>Student Registration</h2>
+@using (Html.BeginForm())
+{
+<div>
+@Html.LabelFor(m => m.Name)
+@Html.TextBoxFor(m => m.Name)
+@Html.ValidationMessageFor(m => m.Name)
+</div>
+<br />
+<div>
+@Html.LabelFor(m => m.Email)
+@Html.TextBoxFor(m => m.Email)
+@Html.ValidationMessageFor(m => m.Email)
+</div>
+<br />
+<div>
+@Html.LabelFor(m => m.Password)
+@Html.PasswordFor(m => m.Password)
+
+@Html.ValidationMessageFor(m => m.Password)
+</div>
+<br />
+<div>
+@Html.LabelFor(m => m.Gender)
+@Html.RadioButtonFor(m => m.Gender, "Male")
+Male
+@Html.RadioButtonFor(m => m.Gender, "Female")
+Female
+</div>
+<br />
+<div>
+@Html.LabelFor(m => m.Course)
+@Html.DropDownListFor(
+m => m.Course,
+new SelectList(new[]
+{
+"BSc Data Science",
+"BSc IT",
+"BCA",
+"MCA"
+}),
+"Select Course"
+)
+</div>
+<br />
+<div>
+@Html.CheckBoxFor(m => m.Agree)
+I agree to the terms and conditions.
+</div>
+<br />
+<input type="submit" value="Register" />
+
+}
+@if (ViewBag.Message != null)
+{
+<h3>@ViewBag.Message</h3>
+}
